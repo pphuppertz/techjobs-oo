@@ -37,26 +37,22 @@ public class JobController {
     @RequestMapping(value = "add", method = RequestMethod.POST)
     public String add(Model model, @Valid JobForm jobForm, Errors errors) {
 
-        if (!errors.hasErrors()) {
-            Job newJob = new Job();
-            newJob.setName(jobForm.getName());
-            newJob.setEmployer(jobData.getEmployers().findById(jobForm.getEmployerId()));
-            newJob.setLocation(
-                    jobData.getLocations().findById(jobForm.getLocationId())
-            );
-            newJob.setCoreCompetency(
-                    jobData.getCoreCompetencies().findById(jobForm.getCoreCompetencyId())
-            );
-            newJob.setPositionType(
-                    jobData.getPositionTypes().findById(jobForm.getPositionTypeId())
-            );
-            jobData.add(newJob);
-            return "redirect:?id=" + newJob.getId();
+        if (errors.hasErrors()){
+            return "new-job";
         }
-
-        model.addAttribute(new JobForm());
-        model.addAttribute("message", "Name can't be empty.");
-        return "new-job";
-
+        Job newJob = new Job();
+        newJob.setName(jobForm.getName());
+        newJob.setEmployer(jobData.getEmployers().findById(jobForm.getEmployerId()));
+        newJob.setLocation(
+                jobData.getLocations().findById(jobForm.getLocationId())
+        );
+        newJob.setCoreCompetency(
+                jobData.getCoreCompetencies().findById(jobForm.getCoreCompetencyId())
+        );
+        newJob.setPositionType(
+                jobData.getPositionTypes().findById(jobForm.getPositionTypeId())
+        );
+        jobData.add(newJob);
+        return "redirect:?id=" + newJob.getId();
     }
 }
